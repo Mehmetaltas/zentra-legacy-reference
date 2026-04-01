@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZENTRA Platform</title>
+  <style>
+    :root{
+      --bg:#071018;
+      --panel:#0c1722;
+      --panel2:#102030;
+      --line:rgba(255,255,255,.08);
+      --text:#e8f0f7;
+      --muted:#9fb0c2;
+      --soft:#7dd3fc;
+      --good:#34d399;
+      --warn:#fbbf24;
+      --bad:#f87171;
+      --accent:#60a5fa;
+      --shadow:0 10px 35px rgba(0,0,0,.28);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      background:linear-gradient(180deg,#06101a 0%,#08131f 100%);
+      color:var(--text);
+      font-family:Inter,Arial,sans-serif
+    }
+    a{color:var(--soft);text-decoration:none}
+    .wrap{max-width:1420px;margin:0 auto;padding:24px}
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:20px
+    }
+    .brand{display:flex;gap:14px;align-items:center}
+    .logo{
+      width:48px;
+      height:48px;
+      border-radius:14px;
+      background:radial-gradient(circle at 30% 30%,#7dd3fc 0%,#3b82f6 45%,#0f172a 100%);
+      box-shadow:0 0 30px rgba(96,165,250,.28)
+    }
+    .title h1{margin:0;font-size:28px}
+    .title p{margin:4px 0 0;color:var(--muted);font-size:14px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      border:1px solid var(--line);
+      background:var(--panel);
+      color:var(--text);
+      padding:11px 15px;
+      border-radius:12px;
+      cursor:pointer;
+      transition:.2s;
+      box-shadow:var(--shadow)
+    }
+    .btn:hover{transform:translateY(-1px);border-color:rgba(125,211,252,.3)}
+    .btn.primary{
+      background:linear-gradient(90deg,#2563eb,#38bdf8);
+      border:none;
+      color:#fff;
+      font-weight:700
+    }
+
+    .hero{
+      background:linear-gradient(135deg,rgba(96,165,250,.13),rgba(125,211,252,.05));
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:24px;
+      box-shadow:var(--shadow);
+      margin-bottom:20px
+    }
+    .hero h2{margin:0 0 10px;font-size:30px;line-height:1.25}
+    .hero p{margin:0;color:var(--muted);max-width:980px;line-height:1.6}
+    .hero-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
+      margin-top:20px
+    }
+    .mini{
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px
+    }
+    .mini .k{font-size:12px;color:var(--muted);margin-bottom:6px}
+    .mini .v{font-size:18px;font-weight:700}
+
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
+    .stack{display:grid;gap:20px}
+    .card{
+      background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow)
+    }
+    .card h3{margin:0 0 14px;font-size:18px}
+    .sub{font-size:13px;color:var(--muted);margin:-4px 0 14px}
+    .section-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:10px
+    }
+
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .form-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+    input,select,textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:12px;
+      background:#09131d;
+      border:1px solid var(--line);
+      color:var(--text);
+      outline:none
+    }
+    textarea{min-height:110px;resize:vertical}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      font-size:12px;
+      color:var(--muted)
+    }
+    .dot{width:8px;height:8px;border-radius:50%}
+    .dot.good{background:var(--good)}
+    .dot.warn{background:var(--warn)}
+    .dot.bad{background:var(--bad)}
+
+    .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .metric{
+      background:#09131d;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px
+    }
+    .metric .k{font-size:12px;color:var(--muted);margin-bottom:6px}
+    .metric .v{font-size:24px;font-weight:800}
+    .metric .s{font-size:12px;color:var(--muted);margin-top:6px}
+
+    .split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .panel{
+      background:#09131d;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px
+    }
+    .panel h4{margin:0 0 10px;font-size:15px}
+    .kv{display:grid;grid-template-columns:160px 1fr;gap:8px;font-size:13px}
+    .kv div:nth-child(odd){color:var(--muted)}
+    .flags,.actions-list,.list{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      font-size:12px
+    }
+    .chip.good{border-color:rgba(52,211,153,.25);color:#a7f3d0}
+    .chip.warn{border-color:rgba(251,191,36,.25);color:#fde68a}
+    .chip.bad{border-color:rgba(248,113,113,.25);color:#fecaca}
+
+    pre{
+      background:#061019;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+      overflow:auto;
+      color:#dbeafe;
+      font-size:12px;
+      line-height:1.45;
+      white-space:pre-wrap;
+      word-break:break-word
+    }
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th,td{
+      border-bottom:1px solid var(--line);
+      padding:10px 8px;
+      text-align:left;
+      vertical-align:top
+    }
+    th{color:var(--muted);font-weight:600}
+    .muted{color:var(--muted)}
+    .footer-note{margin-top:18px;font-size:12px;color:var(--muted);line-height:1.5}
+    .danger{color:#fecaca}
+    .success{color:#a7f3d0}
+    .warning{color:#fde68a}
+
+    @media (max-width:1100px){
+      .grid{grid-template-columns:1fr}
+      .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .hero-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width:700px){
+      .form-grid,.form-grid.three,.split,.metrics,.hero-grid{grid-template-columns:1fr}
+      .kv{grid-template-columns:1fr}
+      .wrap{padding:14px}
+      .hero h2{font-size:24px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div class="title">
+          <h1>ZENTRA Platform</h1>
+          <p>Canlı çekirdek bağlantılı risk, stress, macro, decision ve trade intelligence katmanı</p>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="btnHealth">Health</button>
+        <button class="btn" id="btnMarket">Global Market</button>
+        <button class="btn primary" id="btnAll">Tüm Canlı Blokları Yenile</button>
+      </div>
+    </div>
+
+    <div class="hero">
+      <h2>ZENTRA Platform, canlı çekirdek bağlantısıyla risk, stress, deviation, macro ve decision sonuçlarını; sorun, çözüm, fayda, parasal etki, kanıt katmanları, AI yorumu ve trade doğrulama motoruyla tek ekranda sunar.</h2>
+      <p>
+        Bu ekran tek dosyadır. Canlı market katmanı, skor motoru, stress motoru, central intelligence ve trade full evaluate / validation matrix çıktıları aynı panel içinde çalışır.
+      </p>
+      <div class="hero-grid">
+        <div class="mini"><div class="k">Core API</div><
+            div class="v" id="apiBaseTxt">https://zentra-core.vercel.app</div></div>
+        <div class="mini"><div class="k">Market Mode</div><div class="v" id="heroMarketMode">-</div></div>
+        <div class="mini"><div class="k">Pressure</div><div class="v" id="heroPressure">-</div></div>
+        <div class="mini"><div class="k">Trade Engine</div><div class="v" id="heroTradeStatus">Ready</div></div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="stack">
+        <div class="card">
+          <div class="section-title">
+            <div>
+              <h3>Canlı Risk / Stress Testi</h3>
+              <div class="sub">Score ve stress endpointlerini aynı girişlerle çalıştırır</div>
+            </div>
+            <div class="badge"><span class="dot good"></span><span id="liveStatus">Hazır</span></div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Core API Base URL</label>
+              <input id="apiBase" value="https://zentra-core.vercel.app" />
+            </div>
+            <div class="field">
+              <label>Sector</label>
+              <select id="sector">
+                <option value="logistics">logistics</option>
+                <option value="trade">trade</option>
+                <option value="invoice">invoice</option>
+                <option value="compliance">compliance</option>
+                <option value="sme">sme</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Amount</label>
+              <input id="amount" type="number" value="100000" />
+            </div>
+            <div class="field">
+              <label>Payment Delay Days</label>
+              <input id="delay" type="number" value="12" />
+            </div>
+            <div class="field">
+              <label>Customer Score</label>
+              <input id="customer" type="number" value="68" />
+            </div>
+            <div class="field">
+              <label>Exposure Ratio</label>
+              <input id="exposure" type="number" step="0.01" value="0.42" />
+            </div>
+          </div>
+
+          <div style="height:14px"></div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Planned Amount</label>
+              <input id="pAmount" type="number" value="95000" />
+            </div>
+            <div class="field">
+              <label>Planned Delay Days</label>
+              <input id="pDelay" type="number" value="5" />
+            </div>
+            <div class="field">
+              <label>Planned Customer Score</label>
+              <input id="pCustomer" type="number" value="75" />
+            </div>
+            <div class="field">
+              <label>Planned Exposure Ratio</label>
+              <input id="pExposure" type="number" step="0.01" value="0.30" />
+            </div>
+          </div>
+
+          <div style="height:14px"></div>
+
+          <div class="row">
+            <button class="btn primary" id="runMain">Canlı Çalıştır</button>
+            <button class="btn" id="runScoreOnly">Sadece Score</button>
+            <button class="btn" id="runStressOnly">Sadece Stress</button>
+          </div>
+
+          <div style="height:16px"></div>
+
+          <div class="metrics">
+            <div class="metric">
+              <div class="k">Final Risk Score</div>
+              <div class="v" id="riskScore">-</div>
+              <div class="s" id="riskBand">Risk Band: -</div>
+            </div>
+            <div class="metric">
+              <div class="k">Final Stress Score</div>
+              <div class="v" id="stressScore">-</div>
+              <div class="s" id="stressBand">Stress Band: -</div>
+            </div>
+            <div class="metric">
+              <div class="k">Global Pressure</div>
+              <div class="v" id="globalPressure">-</div>
+              <div class="s" id="marketModeTxt">Mode: -</div>
+            </div>
+            <div class="metric">
+              <div class="k">Market Confidence</div>
+              <div class="v" id="marketConfidence">-</div>
+              <div class="s" id="marketSourceTxt">Source: -</div>
+            </div>
+          </div>
+
+          <div style="height:16px"></div>
+
+          <div class="split">
+            <div class="panel">
+              <h4>Score Decision</h4>
+              <div class="kv" id="scoreDecisionKv"></div>
+            </div>
+            <div class="panel">
+              <h4>Stress Decision</h4>
+              <div class="kv" id="stressDecisionKv"></div>
+            </div>
+          </div>
+
+          <div style="height:16px"></div>
+
+          <div class="split">
+            <div class="panel">
+              <h4>Risk AI Layer</h4>
+              <div class="kv" id="riskAiKv"></div>
+            </div>
+            <div class="panel">
+              <h4>Stress AI Layer</h4>
+              <div class="kv" id="stressAiKv"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <div>
+              <h3>Trade Full Evaluate</h3>
+              <div class="sub">Trade deep verification engine — gerçeklik, fraud risk, execution viability</div>
+            </div>
+            <div class="badge"><span class="dot warn"></span>Trade Intelligence</div>
+          </div>
+
+          <div class="form-grid three">
+            <div class="field">
+              <label>Company Age Years</label>
+              <input id="tCompanyAge" type="number" value="2" />
+            </div>
+            <div class="field">
+              <label>Sector Match</label>
+              <select id="tSectorMatch">
+                <option value="false">false</option>
+                <option value="true">true</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Monthly Quantity MT</label>
+              <input id="tMonthlyQty" type="number" value="20000" />
+            </div>
+            <div class="field">
+              <label>Has CIS</label>
+              <select id="tHasCis"><option value="true">true</option><option value="false">false</option></select>
+            </div>
+            <div class="field">
+              <label>Has Product Spec</label>
+              <select id="tHasSpec"><option value="true">true</option><option value="false">false</option></select>
+            </div>
+            <div class="field">
+              <label>Has COA</label>
+              <select id="tHasCoa"><option value="true">true</option><option value="false">false</option></select>
+            </div>
+            <div class="field">
+              <label>Payment Terms</label>
+              <input id="tPaymentTerms" value="LC SBLC" />
+            </div>
+            <div class="field">
+              <label>Offer Price</label>
+              <input id="tOfferPrice" type="number" value="1160" />
+            </div>
+            <div class="field">
+              <label>Benchmark Price</label>
+              <input id="tBenchmarkPrice" type="number" value="1250" />
+            </div>
+          </div>
+
+          <div style="height:14px"></div>
+
+          <div class="row">
+            <button class="btn primary" id="runTrade">Trade Evaluate</button>
+            <button class="btn" id="runMatrix">Validation Matrix</button>
+          </div>
+
+          <div style="height:16px"></div>
+
+          <div class="metrics">
+            <div class="metric">
+              <div class="k">Trade Realism</div>
+              <div class="v" id="tradeRealism">-</div>
+              <div class="s">Reality strength</div>
+            </div>
+            <div class="metric">
+              <div class="k">Fraud Risk</div>
+              <div class="v" id="tradeFraud">-</div>
+              <div class="s">Fraud / non-performance risk</div>
+            </div>
+            <div class="metric">
+              <div class="k">Execution Viability</div>
+              <div class="v" id="tradeExecution">-</div>
+              <div class="s">Operational feasibility</div>
+            </div>
+            <div class="metric">
+              <div class="k">Decision</div>
+              <div class="v" id="tradeDecision">-</div>
+              <div class="s" id="tradeDecisionNote">-</div>
+            </div>
+          </div>
+
+          <div style="height:16px"></div>
+
+          <div class="split">
+            <div class="panel">
+              <h4>Flags</h4>
+              <div class="flags" id="tradeFlags"></div>
+              <div style="height:12px"></div>
+              <h4>Missing Proofs</h4>
+              <div class="flags" id="tradeMissing"></div>
+            </div>
+            <div class="panel">
+              <h4>Recommended Actions</h4>
+              <div class="actions-list" id="tradeActions"></div>
+            </div>
+          </div>
+
+          <div style="height:16px"></div>
+
+          <div class="panel">
+            <h4>Trade Blocks</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>Block</th>
+                  <th>Score</th>
+                  <th>Status</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody id="tradeBlocks"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <div>
+              <h3>Validation Matrix</h3>
+              <div class="sub">Dataset bazlı pass/fail ve kalibrasyon görünümü</div>
+            </div>
+          </div>
+
+          <div class="metrics">
+            <div class="metric">
+              <div class="k">Total Cases</div>
+              <div class="v" id="mxTotal">-</div>
+              <div class="s">Validation dataset size</div>
+            </div>
+            <div class="metric">
+              <div class="k">Passed Cases</div>
+              <div class="v" id="mxPassed">-</div>
+              <div class="s">Matched expectations</div>
+            </div>
+            <div class="metric">
+              <div class="k">Failed Cases</div>
+              <div class="v" id="mxFailed">-</div>
+              <div class="s">Need calibration</div>
+            </div>
+            <div class="metric">
+              <div class="k">Pass Rate</div>
+              <div class="v" id="mxRate">-</div>
+              <div class="s">Engine validation rate</div>
+            </div>
+          </div>
+
+          <div style="height:16px"></div>
+
+          <div class="panel">
+            <h4>Matrix Results</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>Case</th>
+                  <th>Label</th>
+                  <th>Decision</th>
+                  <th>Realism</th>
+                  <th>Fraud</th>
+                  <th>Pass</th>
+                </tr>
+              </thead>
+              <tbody id="matrixRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <div class="section-title">
+            <div>
+              <h3>Global Market</h3>
+              <div class="sub">Canlı FX + canlı US10Y + canlı Oil + derived Gold</div>
+            </div>
+            <div class="badge"><span class="dot good"></span><span id="marketBadge">Market Ready</span></div>
+          </div>
+          <div class="kv" id="marketKv"></div>
+          <div style="height:16px"></div>
+          <h4>Source Breakdown</h4>
+          <div class="flags" id="sourceBreakdown"></div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <div>
+              <h3>Central Intelligence Brief</h3>
+              <div class="sub">Merkez akıl özeti, öncelikler ve evrim yönü</div>
+            </div>
+          </div>
+          <div class="kv" id="centralKv"></div>
+          <div style="height:16px"></div>
+          <h4>Priority Queue</h4>
+          <div class="list" id="priorityList"></div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <div>
+              <h3>Canlı JSON Çıktıları</h3>
+              <div class="sub">Debug ve doğrulama için ham çıktılar</div>
+            </div>
+          </div>
+
+          <h4>Global Market JSON</h4>
+          <pre id="marketJson">-</pre>
+
+          <h4>Score JSON</h4>
+          <pre id="scoreJson">-</pre>
+
+          <h4>Stress JSON</h4>
+          <pre id="stressJson">-</pre>
+
+          <h4>Trade Evaluate JSON</h4>
+          <pre id="tradeJson">-</pre>
+
+          <h4>Validation Matrix JSON</h4>
+          <pre id="matrixJson">-</pre>
+        </div>
+
+        <div class="card">
+          <h3>Notlar</h3>
+          <div class="footer-note">
+            Bu ekran tek dosyadır.
+            <br>• FX = canlı
+            <br>• US10Y = canlı
+            <br>• Oil = canlı
+            <br>• Gold = derived
+            <br>• Trade engine = POST /trade/full-evaluate
+            <br>• Validation matrix = GET /trade/validation-matrix
+            <br><br>
+            Bir sonraki doğru blok: <span class="warning">dedicated live gold feed</span>.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    function num(v, digits = 2){
+      const n = Number(v);
+      if (Number.isNaN(n)) return "-";
+      return n.toLocaleString("tr-TR", {
+        maximumFractionDigits: digits,
+        minimumFractionDigits: 0
+      });
+    }
+
+    function esc(s){
+      return String(s ?? "").replace(/[&<>"']/g, m => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+      }[m]));
+    }
+
+    function setKV(el, rows){
+      el.innerHTML = rows.map(([k,v]) => `<div>${esc(k)}</div><div>${esc(v)}</div>`).join("");
+    }
+
+    function chip(text, cls=""){
+      return `<span class="chip ${cls}">${esc(text)}</span>`;
+    }
+
+    async function getJSON(url){
+      const r = await fetch(url);
+      const data = await r.json();
+      if(!r.ok) throw new Error(data?.detail || data?.error || `HTTP ${r.status}`);
+      return data;
+    }
+
+    async function postJSON(url, body){
+      const r = await fetch(url,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(body)
+      });
+      const data = await r.json();
+      if(!r.ok) throw new Error(data?.detail || data?.error || `HTTP ${r.status}`);
+      return data;
+    }
+
+    function buildMainParams(){
+      const p = new URLSearchParams({
+        amount: $("amount").value,
+        payment_delay_days: $("delay").value,
+        sector: $("sector").value,
+        customer_score: $("customer").value,
+        exposure_ratio: $("exposure").value,
+        planned_amount: $("pAmount").value,
+        planned_payment_delay_days: $("pDelay").value,
+        planned_customer_score: $("pCustomer").value,
+        planned_exposure_ratio: $("pExposure").value
+      });
+      return p.toString();
+    }
+
+    function tradePayload(){
+      return {
+        company_age_years: Number($("tCompanyAge").value),
+        sector_match: $("tSectorMatch").value === "true",
+        has_cis: $("tHasCis").value === "true",
+        has_product_spec: $("tHasSpec").value === "true",
+        has_coa: $("tHasCoa").value === "true",
+        payment_terms: $("tPaymentTerms").value,
+        monthly_quantity_mt: Number($("tMonthlyQty").value),
+        offer_price: Number($("tOfferPrice").value),
+        benchmark_price: Number($("tBenchmarkPrice").value)
+      };
+    }
+
+    function bindMarket(data){
+      const market = data.market || {};
+      const pressure = data.pressure || {};
+
+      $("heroMarketMode").textContent = market.source?.mode || "-";
+      $("heroPressure").textContent = pressure.level || "-";
+      $("marketModeTxt").textContent = "Mode: " + (market.source?.mode || "-");
+      $("marketConfidence").textContent = num(pressure.confidence || market.source?.confidence || 0, 2);
+      $("marketSourceTxt").textContent = "Source: " + (market.source?.source_name || "-");
+      $("globalPressure").textContent = pressure.level || "-";
+      $("marketJson").textContent = JSON.stringify(data, null, 2);
+
+      setKV($("marketKv"), [
+        ["USDTRY", market.usdtry],
+        ["EURUSD", market.eurusd],
+        ["Gold", market.gold],
+        ["Oil", market.oil],
+        ["US10Y", market.us10y],
+        ["Pressure", pressure.level || "-"],
+        ["Reasons", (pressure.reasons || []).join(", ") || "-"],
+        ["Source Mode", market.source?.mode || "-"],
+        ["Source Name", market.source?.source_name || "-"],
+        ["Confidence", pressure.confidence ?? market.source?.confidence ?? "-"]
+      ]);
+
+      $("sourceBreakdown").innerHTML = [
+        chip(`FX: ${pressure.source_breakdown?.fx_mode || "-"}`, "good"),
+        chip(`Rates: ${pressure.source_breakdown?.rates_mode || "-"}`, "good"),
+        chip(`Commodity: ${pressure.source_breakdown?.commodity_mode || "-"}`, "warn"),
+        chip(`Gold: ${pressure.source_breakdown?.gold_mode || "-"}`, "warn")
+      ].join("");
+    }
+
+    function bindScore(data){
+      $("riskScore").textContent = num(data.final_risk_score);
+      $("riskBand").textContent = "Risk Band: " + (data.risk_band || "-");
+      $("scoreJson").textContent = JSON.stringify(data, null, 2);
+
+      const d = data.decision || {};
+      setKV($("scoreDecisionKv"), [
+        ["Action", d.action || "-"],
+        ["Alert", d.alert || "-"],
+        ["Strategy", d.strategy || "-"],
+        ["Rationale", d.rationale || "-"],
+        ["Lens", d.lens || "-"],
+        ["Problem", d.problem || "-"],
+        ["Solution", d.solution || "-"],
+        ["Benefit", d.benefit || "-"],
+        ["Monetary Impact", d.monetary_impact || "-"],
+        ["Confidence", d.evidence?.confidence ?? "-"],
+        ["Source Mode", d.evidence?.source_mode || "-"],
+        ["Source Name", d.evidence?.source_name || "-"]
+      ]);
+
+      const ai = data.ai || {};
+      setKV($("riskAiKv"), [
+        ["AI Summary", ai.summary || "-"],
+        ["AI Recommendation", ai.recommendation || "-"],
+        ["AI Confidence Note", ai.confidence_note || "-"],
+        ["AI Benefit Note", ai.benefit_note || "-"],
+        ["AI Money Note", ai.money_note || "-"],
+        ["AI Reasoning Scope", ai.reasoning_scope || "-"]
+      ]);
+    }
+
+    function bindStress(data){
+      $("stressScore").textContent = num(data.final_stress_score);
+      $("stressBand").textContent = "Stress Band: " + (data.stress_band || "-");
+      $("stressJson").textContent = JSON.stringify(data, null, 2);
+
+      const d = data.decision || {};
+      setKV($("stressDecisionKv"), [
+        ["Action", d.action || "-"],
+        ["Alert", d.alert || "-"],
+        ["Strategy", d.strategy || "-"],
+        ["Rationale", d.rationale || "-"],
+        ["Lens", d.lens || "-"],
+        ["Problem", d.problem || "-"],
+        ["Solution", d.solution || "-"],
+        ["Benefit", d.benefit || "-"],
+        ["Monetary Impact", d.monetary_impact || "-"],
+        ["Confidence", d.evidence?.confidence ?? "-"],
+        ["Source Mode", d.evidence?.source_mode || "-"],
+        ["Source Name", d.evidence?.source_name || "-"]
+      ]);
+
+      const ai = data.ai || {};
+      setKV($("stressAiKv"), [
+        ["AI Summary", ai.summary || "-"],
+        ["AI Recommendation", ai.recommendation || "-"],
+        ["AI Confidence Note", ai.confidence_note || "-"],
+        ["AI Benefit Note", ai.benefit_note || "-"],
+        ["AI Money Note", ai.money_note || "-"],
+        ["AI Reasoning Scope", ai.reasoning_scope || "-"]
+      ]);
+    }
+
+    function bindTrade(data){
+      $("tradeJson").textContent = JSON.stringify(data, null, 2);
+      $("tradeRealism").textContent = num(data.trade_realism_score);
+      $("tradeFraud").textContent = num(data.fraud_risk_score);
+      $("tradeExecution").textContent = num(data.execution_viability_score);
+      $("tradeDecision").textContent = data.decision?.action || "-";
+      $("tradeDecisionNote").textContent = data.decision?.note || "-";
+
+      $("tradeFlags").innerHTML =
+        (data.flags || []).map(x => chip(x, "bad")).join("") || "<span class='muted'>-</span>";
+
+      $("tradeMissing").innerHTML =
+        (data.missing_proofs || []).map(x => chip(x, "warn")).join("") || "<span class='muted'>-</span>";
+
+      $("tradeActions").innerHTML =
+        (data.recommended_actions || []).map(x => chip(x, "good")).join("") || "<span class='muted'>-</span>";
+
+      $("tradeBlocks").innerHTML = (data.blocks || []).map(b => `
+        <tr>
+          <td>${esc(b.name)}</td>
+          <td>${esc(b.score)}</td>
+          <td>${esc(b.status || "-")}</td>
+          <td>${esc(Array.isArray(b.notes) ? b.notes.join(" | ") : "")}</td>
+        </tr>
+      `).join("");
+    }
+
+    function bindMatrix(data){
+      $("matrixJson").textContent = JSON.stringify(data, null, 2);
+      $("mxTotal").textContent = data.total_cases ?? "-";
+      $("mxPassed").textContent = data.passed_cases ?? "-";
+      $("mxFailed").textContent = data.failed_cases ?? "-";
+      $("mxRate").textContent = (data.pass_rate ?? "-") + "%";
+
+      $("matrixRows").innerHTML = (data.results || []).map(r => `
+        <tr>
+          <td>${esc(r.case_id)}</td>
+          <td>${esc(r.label)}</td>
+          <td>${esc(r.actual?.decision?.action || "-")}</td>
+          <td>${esc(r.actual?.trade_realism_score ?? "-")}</td>
+          <td>${esc(r.actual?.fraud_risk_score ?? "-")}</td>
+          <td>${r.comparison?.all_passed ? "<span class='success'>PASS</span>" : "<span class='danger'>FAIL</span>"}</td>
+        </tr>
+      `).join("");
+    }
+
+    async function loadMarket(){
+      const base = $("apiBase").value.trim();
+      const data = await getJSON(base + "/global/market");
+      bindMarket(data);
+      return data;
+    }
+
+    async function loadScore(){
+      const base = $("apiBase").value.trim();
+      const data = await getJSON(base + "/score?" + buildMainParams());
+      bindScore(data);
+      return data;
+    }
+
+    async function loadStress(){
+      const base = $("apiBase").value.trim();
+      const data = await getJSON(base + "/stress?" + buildMainParams());
+      bindStress(data);
+      return data;
+    }
+
+    async function loadCentral(){
+      const base = $("apiBase").value.trim();
+      const [brief, priority] = await Promise.all([
+        getJSON(base + "/central/brief"),
+        getJSON(base + "/central/priority")
+      ]);
+
+      setKV($("centralKv"), [
+        ["Central Brief", brief.central_brief || "-"],
+        ["Central Priority", brief.central_priority || "-"],
+        ["Activation Note", brief.central_activation_note || "-"],
+        ["Pressure Level", brief.macro_context?.pressure_level || "-"],
+        ["Pressure Reasons", (brief.macro_context?.pressure_reasons || []).join(", ") || "-"],
+        ["Market Source Mode", brief.macro_context?.market_source_mode || "-"],
+        ["Market Confidence", brief.macro_context?.market_confidence ?? "-"]
+      ]);
+
+      $("priorityList").innerHTML =
+        (priority.priority_queue || []).map(p => chip(`#${p.rank} ${p.item}`, "warn")).join("");
+    }
+
+    async function runTrade(){
+      const base = $("apiBase").value.trim();
+      const data = await postJSON(base + "/trade/full-evaluate", tradePayload());
+      bindTrade(data);
+      $("heroTradeStatus").textContent = data.decision?.action || "Done";
+      return data;
+    }
+
+    async function runMatrix(){
+      const base = $("apiBase").value.trim();
+      const data = await getJSON(base + "/trade/validation-matrix");
+      bindMatrix(data);
+      return data;
+    }
+
+    async function runAll(){
+      try{
+        $("liveStatus").textContent = "Yükleniyor...";
+        await Promise.all([loadMarket(), loadCentral()]);
+        await Promise.all([loadScore(), loadStress()]);
+        $("liveStatus").textContent = "Canlı sonuç başarıyla alındı.";
+      }catch(err){
+        $("liveStatus").textContent = "Hata: " + err.message;
+      }
+    }
+
+    $("btnAll").addEventListener("click", runAll);
+
+    $("btnHealth").addEventListener("click", async ()=>{
+      try{
+        const base = $("apiBase").value.trim();
+        const data = await getJSON(base + "/health");
+        alert("Health: " + JSON.stringify(data, null, 2));
+      }catch(err){
+        alert("Hata: " + err.message);
+      }
+    });
+
+    $("btnMarket").addEventListener("click", async ()=>{
+      try{
+        await loadMarket();
+      }catch(err){
+        alert("Hata: " + err.message);
+      }
+    });
+
+    $("runMain").addEventListener("click", runAll);
+
+    $("runScoreOnly").addEventListener("click", async ()=>{
+      try{
+        $("liveStatus").textContent = "Score yükleniyor...";
+        await loadScore();
+        $("liveStatus").textContent = "Score tamam.";
+      }catch(err){
+        $("liveStatus").textContent = "Hata: " + err.message;
+      }
+    });
+
+    $("runStressOnly").addEventListener("click", async ()=>{
+      try{
+        $("liveStatus").textContent = "Stress yükleniyor...";
+        await loadStress();
+        $("liveStatus").textContent = "Stress tamam.";
+      }catch(err){
+        $("liveStatus").textContent = "Hata: " + err.message;
+      }
+    });
+
+    $("runTrade").addEventListener("click", async ()=>{
+      try{
+        await runTrade();
+      }catch(err){
+        alert("Trade Hata: " + err.message);
+      }
+    });
+
+    $("runMatrix").addEventListener("click", async ()=>{
+      try{
+        await runMatrix();
+      }catch(err){
+        alert("Matrix Hata: " + err.message);
+      }
+    });
+
+    runAll();
+  </script>
+</body>
+</html>                                             
